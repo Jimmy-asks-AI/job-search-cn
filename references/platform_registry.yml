@@ -1,0 +1,163 @@
+# Capability levels:
+# 0 manual JD only
+# 1 public search/detail extraction
+# 2 user-authorized read-only logged-in browsing
+# 3 assisted packet/open-page/prefill, user submits
+# 4 controlled auto-apply, explicit confirmation per action
+
+platforms:
+  - id: boss
+    name: BOSS直聘
+    domains: ["zhipin.com"]
+    priority: P0
+    category: mainstream
+    capability_level: 3
+    supports: ["search", "detail_parse", "greeting_draft", "manual_handoff"]
+    requires_login_for: ["chat", "apply", "full_recruiter_info"]
+    default_mode: semi_auto
+    risk: high
+    notes: "可参考 boss-agent-cli；真实沟通和投递必须确认。"
+
+  - id: zhilian
+    name: 智联招聘
+    domains: ["zhaopin.com"]
+    priority: P0
+    category: mainstream
+    capability_level: 3
+    supports: ["search", "detail_parse", "resume_packet", "manual_handoff"]
+    requires_login_for: ["apply", "resume_upload"]
+    default_mode: semi_auto
+    risk: high
+    notes: "真实投递和上传附件必须确认。"
+
+  - id: qiancheng
+    name: 前程无忧
+    domains: ["51job.com"]
+    priority: P0
+    category: mainstream
+    capability_level: 3
+    supports: ["search", "detail_parse", "resume_packet", "manual_handoff"]
+    requires_login_for: ["apply", "resume_upload"]
+    default_mode: semi_auto
+    risk: high
+    notes: "也称 51job；可参考 boss-agent-cli 和 job-crawler。"
+
+  - id: liepin
+    name: 猎聘
+    domains: ["liepin.com"]
+    priority: P0
+    category: mainstream
+    capability_level: 2
+    supports: ["search", "detail_parse", "message_draft"]
+    requires_login_for: ["apply", "message"]
+    default_mode: read_only
+    risk: high
+    notes: "猎头沟通场景较多，优先生成沟通话术。"
+
+  - id: lagou
+    name: 拉勾
+    domains: ["lagou.com"]
+    priority: P0
+    category: internet
+    capability_level: 2
+    supports: ["search", "detail_parse"]
+    requires_login_for: ["apply"]
+    default_mode: read_only
+    risk: medium
+    notes: "可参考 job-crawler。"
+
+  - id: maimai
+    name: 脉脉
+    domains: ["maimai.cn"]
+    priority: P0
+    category: internet
+    capability_level: 1
+    supports: ["manual_jd", "message_draft"]
+    requires_login_for: ["detail", "message", "apply"]
+    default_mode: assistive
+    risk: high
+    notes: "社交属性强，默认只做话术和手动辅助。"
+
+  - id: nowcoder
+    name: 牛客
+    domains: ["nowcoder.com"]
+    priority: P0
+    category: tech
+    capability_level: 2
+    supports: ["search", "detail_parse", "campus_jobs"]
+    requires_login_for: ["apply"]
+    default_mode: read_only
+    risk: medium
+    notes: "技术、校招、笔面经内容有价值。"
+
+  - id: shixiseng
+    name: 实习僧
+    domains: ["shixiseng.com"]
+    priority: P1
+    category: internship
+    capability_level: 2
+    supports: ["search", "detail_parse", "resume_packet"]
+    requires_login_for: ["apply"]
+    default_mode: read_only
+    risk: medium
+    notes: "适合实习和应届生。"
+
+  - id: yingjiesheng
+    name: 应届生求职网
+    domains: ["yingjiesheng.com"]
+    priority: P1
+    category: campus
+    capability_level: 1
+    supports: ["search", "announcement_parse"]
+    requires_login_for: []
+    default_mode: read_only
+    risk: low
+    notes: "公告聚合为主。"
+
+  - id: guopin
+    name: 国聘
+    domains: ["iguopin.com"]
+    priority: P1
+    category: state_owned
+    capability_level: 2
+    supports: ["search", "announcement_parse", "resume_packet"]
+    requires_login_for: ["apply"]
+    default_mode: read_only
+    risk: medium
+    notes: "央国企岗位优先保留公告快照。"
+
+  - id: moka
+    name: Moka企业招聘
+    domains: ["mokahr.com"]
+    priority: P1
+    category: ats
+    capability_level: 3
+    supports: ["detail_parse", "resume_packet", "manual_handoff"]
+    requires_login_for: ["apply_form"]
+    default_mode: semi_auto
+    risk: medium
+    notes: "企业 ATS，通常以表单投递为主。"
+
+  - id: beisen
+    name: 北森招聘
+    domains: ["italent.cn", "beisen.com"]
+    priority: P1
+    category: ats
+    capability_level: 3
+    supports: ["detail_parse", "resume_packet", "manual_handoff"]
+    requires_login_for: ["apply_form"]
+    default_mode: semi_auto
+    risk: medium
+    notes: "企业 ATS，默认生成投递包和手动步骤。"
+
+  - id: dayee
+    name: 大易招聘
+    domains: ["dayee.com"]
+    priority: P1
+    category: ats
+    capability_level: 3
+    supports: ["detail_parse", "resume_packet", "manual_handoff"]
+    requires_login_for: ["apply_form"]
+    default_mode: semi_auto
+    risk: medium
+    notes: "企业 ATS，适合校招和集团招聘。"

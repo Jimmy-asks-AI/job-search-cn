@@ -1,0 +1,26 @@
+name: ""
+phone: ""
+email: ""
+city: ""
+current_status: ""
+availability: ""
+expected_salary: ""
+target_roles: []
+target_cities: []
+target_industries: []
+work_modes: ["onsite", "hybrid", "remote"]
+seniority: ""
+blacklists:
+  companies: []
+  titles: []
+  cities: []
+privacy:
+  allow_send_phone: false
+  allow_send_wechat: false
+  allow_send_id_number: false
+  allow_auto_submit: false
+search_preferences:
+  platforms: ["boss", "zhilian", "qiancheng", "liepin", "lagou", "nowcoder"]
+  min_match_score: 70
+  max_daily_applications: 0
+  default_mode: "assistive"

@@ -1,0 +1,6 @@
+interface:
+  display_name: "中国求职 Skill"
+  short_description: "中文简历、岗位搜索、定制投递工作流"
+  default_prompt: "Use $job-search-cn to plan and execute a China-focused job search from resume tailoring to confirmed application packets."
+policy:
+  allow_implicit_invocation: true

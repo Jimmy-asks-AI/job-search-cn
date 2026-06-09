@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Local generated job-search artifacts
+packets/
+application_packets/
+job_analysis.json
+match_score.json
+resume_sections.json
+jobs_dedup.jsonl
+*.html
+*.pdf
+*.docx
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
