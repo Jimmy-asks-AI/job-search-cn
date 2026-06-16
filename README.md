@@ -84,7 +84,7 @@ job-search-cn/
 
 ## 脚本
 
-所有脚本均为本地运行、无外部依赖，不会访问招聘平台。
+所有脚本均为本地运行，只使用 Python 标准库，不会访问招聘平台。
 
 ```powershell
 python scripts/analyze_jd.py jd.md --out job_analysis.json
@@ -100,8 +100,17 @@ python scripts/validate_platform_registry.py references/platform_registry.yml
 
 把整个目录复制到本机 Codex skills 目录：
 
+Windows PowerShell:
+
 ```powershell
 Copy-Item -Recurse . "$env:USERPROFILE\.codex\skills\job-search-cn"
+```
+
+macOS / Linux:
+
+```bash
+mkdir -p "$HOME/.codex/skills"
+cp -R . "$HOME/.codex/skills/job-search-cn"
 ```
 
 然后在 Codex 里用：
