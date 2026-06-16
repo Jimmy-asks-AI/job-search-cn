@@ -22,6 +22,8 @@ This skill is based on tested patterns from `career-ops`, `Resume-Matcher`, `rea
 
 Default to **assistive mode**. Do not submit applications, send greetings, upload resumes, bypass captchas, evade anti-bot systems, or operate a logged-in account unless the user explicitly asks for that exact action and confirms the final target list.
 
+Implicit invocation is still assistive-only. If this skill is invoked because the request looks like a job-search task, first confirm the intended mode before using logged-in pages, browser sessions, platform accounts, or any live application surface.
+
 Before any real submit/send/upload action, require a final confirmation containing:
 
 - Platform, company, role, city, and job URL.
@@ -49,6 +51,7 @@ Read [compliance_policy.md](references/compliance_policy.md) before any platform
    - For platform coverage and capability levels, read [platform_registry.yml](references/platform_registry.yml).
    - Prefer manual JD input or public read-only search first.
    - Build a search plan with platform, query, city, filters, risk level, and expected output.
+   - Separate confirmed current postings, expired postings, unverified snippets, and anti-bot-blocked pages. Do not claim "full-web" completeness unless sources and dedupe rules are shown.
    - Use `scripts/dedupe_jobs.py` for CSV/JSON/JSONL job lists before scoring or application.
 
 4. **JD Analysis And Matching**
@@ -63,8 +66,8 @@ Read [compliance_policy.md](references/compliance_policy.md) before any platform
    - Include a change log: changed sentence, source resume fact, JD requirement, reason, and risk.
 
 6. **Beautification And Export**
-   - Use ATS-friendly layout for upload: single column, clear headings, selectable text, common fonts.
-   - Use visual layout only when the employer expects portfolio-style presentation.
+   - Default to ATS-friendly layout for upload: single column, clear headings, selectable text, common fonts.
+   - Use visual layout only when the employer expects portfolio-style presentation, and keep an ATS-safe version alongside it.
    - Use `scripts/render_resume.py` to create a styled HTML resume from Markdown when no full resume renderer is available.
 
 7. **Application Packet**
@@ -76,6 +79,7 @@ Read [compliance_policy.md](references/compliance_policy.md) before any platform
    - For normal requests, deliver the packet and exact manual steps.
    - For semi-automatic requests, open the job page only after user approval and let the user click submit.
    - For controlled auto-apply, follow [application_workflow.md](references/application_workflow.md) and require final confirmation for every submit/send/upload action.
+   - If login expires, captcha/risk prompts appear, platform UI blocks automation, or submission status is unclear, stop automation, log the reason, and switch to manual handoff.
 
 9. **Review And Iterate**
    - After application or rejection feedback, update the application log and extract lessons.
