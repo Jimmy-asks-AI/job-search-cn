@@ -18,7 +18,13 @@ REQUIRED_KEYS = {
     "requires_login_for",
     "default_mode",
     "risk",
+    "session_lifetime_hint",
+    "rate_limit_hint",
+    "ui_challenge_observed",
+    "fallback_mode_when_blocked",
 }
+
+ALLOWED_FALLBACK_MODES = {"assistive", "read_only", "semi_auto", "manual_handoff"}
 
 
 def parse_blocks(text: str) -> list[tuple[int, str]]:
@@ -55,6 +61,11 @@ def validate(text: str) -> list[str]:
         level = re.search(r"capability_level:\s*(\d+)", block)
         if level and not 0 <= int(level.group(1)) <= 4:
             errors.append(f"Platform '{entry_id}' has invalid capability_level.")
+        fallback = re.search(r"fallback_mode_when_blocked:\s*([^\n#]+)", block)
+        if fallback:
+            fallback_mode = fallback.group(1).strip().strip('"')
+            if fallback_mode not in ALLOWED_FALLBACK_MODES:
+                errors.append(f"Platform '{entry_id}' has invalid fallback_mode_when_blocked.")
     return errors
 
 
