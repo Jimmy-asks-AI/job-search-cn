@@ -4,6 +4,12 @@
 # 2 user-authorized read-only logged-in browsing
 # 3 assisted packet/open-page/prefill, user submits
 # 4 controlled auto-apply, explicit confirmation per action
+#
+# Risk-control fields:
+# session_lifetime_hint: how stable logged-in sessions usually are for planning.
+# rate_limit_hint: conservative pacing guidance; never bypass platform limits.
+# ui_challenge_observed: likely UI/security challenges to stop on.
+# fallback_mode_when_blocked: required mode when automation is blocked.
 
 platforms:
   - id: boss
@@ -16,6 +22,10 @@ platforms:
     requires_login_for: ["chat", "apply", "full_recruiter_info"]
     default_mode: semi_auto
     risk: high
+    session_lifetime_hint: "short_or_unstable"
+    rate_limit_hint: "strict; one confirmed greeting or application at a time"
+    ui_challenge_observed: ["captcha", "risk_prompt", "login_refresh", "chat_limit"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "可参考 boss-agent-cli；真实沟通和投递必须确认。"
 
   - id: zhilian
@@ -28,6 +38,10 @@ platforms:
     requires_login_for: ["apply", "resume_upload"]
     default_mode: semi_auto
     risk: high
+    session_lifetime_hint: "medium; may require login refresh"
+    rate_limit_hint: "strict; avoid batch upload or batch apply"
+    ui_challenge_observed: ["captcha", "risk_prompt", "login_refresh"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "真实投递和上传附件必须确认。"
 
   - id: qiancheng
@@ -40,6 +54,10 @@ platforms:
     requires_login_for: ["apply", "resume_upload"]
     default_mode: semi_auto
     risk: high
+    session_lifetime_hint: "medium; may require login refresh"
+    rate_limit_hint: "strict; avoid batch upload or batch apply"
+    ui_challenge_observed: ["captcha", "risk_prompt", "login_refresh"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "也称 51job；可参考 boss-agent-cli 和 job-crawler。"
 
   - id: liepin
@@ -52,6 +70,10 @@ platforms:
     requires_login_for: ["apply", "message"]
     default_mode: read_only
     risk: high
+    session_lifetime_hint: "short_or_unstable"
+    rate_limit_hint: "strict; one confirmed message or application at a time"
+    ui_challenge_observed: ["captcha", "risk_prompt", "login_refresh", "message_limit"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "猎头沟通场景较多，优先生成沟通话术。"
 
   - id: lagou
@@ -64,6 +86,10 @@ platforms:
     requires_login_for: ["apply"]
     default_mode: read_only
     risk: medium
+    session_lifetime_hint: "medium"
+    rate_limit_hint: "moderate; prefer read-only collection and manual submit"
+    ui_challenge_observed: ["captcha", "login_refresh"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "可参考 job-crawler。"
 
   - id: maimai
@@ -76,6 +102,10 @@ platforms:
     requires_login_for: ["detail", "message", "apply"]
     default_mode: assistive
     risk: high
+    session_lifetime_hint: "short_or_unstable"
+    rate_limit_hint: "strict; do not automate social messaging"
+    ui_challenge_observed: ["captcha", "risk_prompt", "login_refresh", "relationship_gate"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "社交属性强，默认只做话术和手动辅助。"
 
   - id: nowcoder
@@ -88,6 +118,10 @@ platforms:
     requires_login_for: ["apply"]
     default_mode: read_only
     risk: medium
+    session_lifetime_hint: "medium"
+    rate_limit_hint: "moderate; campus postings can be collected read-only"
+    ui_challenge_observed: ["captcha", "login_refresh"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "技术、校招、笔面经内容有价值。"
 
   - id: shixiseng
@@ -100,6 +134,10 @@ platforms:
     requires_login_for: ["apply"]
     default_mode: read_only
     risk: medium
+    session_lifetime_hint: "medium"
+    rate_limit_hint: "moderate; prefer packet generation and manual submit"
+    ui_challenge_observed: ["captcha", "login_refresh"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "适合实习和应届生。"
 
   - id: yingjiesheng
@@ -112,6 +150,10 @@ platforms:
     requires_login_for: []
     default_mode: read_only
     risk: low
+    session_lifetime_hint: "not_required_for_public_announcements"
+    rate_limit_hint: "low; public announcement reading only"
+    ui_challenge_observed: ["anti_scraping_block", "stale_announcement"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "公告聚合为主。"
 
   - id: guopin
@@ -124,6 +166,10 @@ platforms:
     requires_login_for: ["apply"]
     default_mode: read_only
     risk: medium
+    session_lifetime_hint: "medium"
+    rate_limit_hint: "moderate; keep announcement snapshots"
+    ui_challenge_observed: ["captcha", "login_refresh", "stale_announcement"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "央国企岗位优先保留公告快照。"
 
   - id: moka
@@ -136,6 +182,10 @@ platforms:
     requires_login_for: ["apply_form"]
     default_mode: semi_auto
     risk: medium
+    session_lifetime_hint: "per_company_site"
+    rate_limit_hint: "one confirmed form at a time"
+    ui_challenge_observed: ["captcha", "login_refresh", "form_validation_error", "file_upload_error"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "企业 ATS，通常以表单投递为主。"
 
   - id: beisen
@@ -148,6 +198,10 @@ platforms:
     requires_login_for: ["apply_form"]
     default_mode: semi_auto
     risk: medium
+    session_lifetime_hint: "per_company_site"
+    rate_limit_hint: "one confirmed form at a time"
+    ui_challenge_observed: ["captcha", "login_refresh", "form_validation_error", "file_upload_error"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "企业 ATS，默认生成投递包和手动步骤。"
 
   - id: dayee
@@ -160,4 +214,8 @@ platforms:
     requires_login_for: ["apply_form"]
     default_mode: semi_auto
     risk: medium
+    session_lifetime_hint: "per_company_site"
+    rate_limit_hint: "one confirmed form at a time"
+    ui_challenge_observed: ["captcha", "login_refresh", "form_validation_error", "file_upload_error"]
+    fallback_mode_when_blocked: manual_handoff
     notes: "企业 ATS，适合校招和集团招聘。"
