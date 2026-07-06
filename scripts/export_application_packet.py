@@ -8,6 +8,12 @@ from datetime import date
 from pathlib import Path
 
 
+LOG_HEADER = (
+    "| 日期 | 平台 | 公司 | 岗位 | 城市 | 链接 | 匹配分 | 真实性 | 简历版本 | 动作模式 | 状态 | 下次跟进 | 备注 |\n"
+    "|---|---|---|---|---|---|---:|---|---|---|---|---|---|\n"
+)
+
+
 def safe_part(value: str) -> str:
     keep = []
     for char in value.strip():
@@ -31,6 +37,7 @@ def main() -> int:
     parser.add_argument("--platform", default="")
     parser.add_argument("--city", default="")
     parser.add_argument("--url", default="")
+    parser.add_argument("--legitimacy", default="")
     parser.add_argument("--resume", type=Path)
     parser.add_argument("--jd-analysis", type=Path)
     parser.add_argument("--cover-letter", type=Path)
@@ -51,13 +58,16 @@ def main() -> int:
 - Platform: {args.platform}
 - City: {args.city}
 - URL: {args.url}
+- Legitimacy: {args.legitimacy}
 - Date: {date.today().isoformat()}
 
 ## Before Submission
 
 - [ ] JD snapshot reviewed.
+- [ ] Posting legitimacy reviewed.
 - [ ] Resume version reviewed.
 - [ ] Cover letter or greeting reviewed.
+- [ ] Form-answer drafts reviewed if the platform asks open questions.
 - [ ] No invented facts.
 - [ ] User confirmed live action.
 
@@ -69,9 +79,9 @@ Do not submit/send/upload until the user confirms this exact packet.
 
     log_row = (
         f"| {date.today().isoformat()} | {args.platform} | {args.company} | {args.role} | "
-        f"{args.city} | {args.url} |  | {packet.name} | assistive | packet_ready |  |  |\n"
+        f"{args.city} | {args.url} |  | {args.legitimacy} | {packet.name} | assistive | packet_ready |  |  |\n"
     )
-    (packet / "application_log_row.md").write_text(log_row, encoding="utf-8")
+    (packet / "application_log_row.md").write_text(LOG_HEADER + log_row, encoding="utf-8")
     print(str(packet))
     return 0
 

@@ -2,14 +2,24 @@
 
 Use this file for packet creation, status tracking, and apply/handoff decisions.
 
+## Pipeline Inbox
+
+For multi-job work, keep a lightweight inbox using `templates/job_pipeline.md`:
+
+- `Pending`: raw URLs, pasted JD file paths, or manually collected roles not yet evaluated.
+- `[!]`: blocked, expired, login-only, or otherwise inaccessible roles with a short reason.
+- `Processed`: evaluated roles with score, legitimacy, packet/report path, and next action.
+
+Do not generate tailored resumes for every pending item. Score and legitimacy-filter first; tailor only roles above the user's threshold or roles the user explicitly keeps.
+
 ## States
 
 ```text
-collected -> screened -> tailored -> packet_ready -> user_confirmed -> submitted
+collected -> screened -> evaluated -> tailored -> packet_ready -> user_confirmed -> submitted
                                      -> manual_handoff
                                      -> skipped
 user_confirmed -> in_conversation -> submitted
-submitted -> interview -> offer -> accepted
+submitted -> responded -> interview -> offer -> accepted
 submitted -> rejected -> re_tailor -> screened
 submitted -> no_response -> follow_up_7d -> follow_up_14d -> follow_up_30d
 any_live_action -> blocked_by_platform -> manual_handoff
@@ -22,8 +32,11 @@ Each company-role packet should contain:
 
 - JD snapshot and source URL.
 - Match score and gap notes.
+- Posting legitimacy classification.
 - Tailored resume.
 - Cover letter or platform greeting.
+- Application-form answer drafts when the form asks open questions.
+- Interview-prep topic list for roles likely to proceed.
 - Upload filename recommendation.
 - Manual application steps.
 - Final confirmation checklist.
@@ -32,7 +45,7 @@ Each company-role packet should contain:
 ## Auto-Apply Gates
 
 Gate 1: target list is deduped and visible to the user.  
-Gate 2: each job has a tailored resume and message.  
+Gate 2: each job has a score, legitimacy classification, tailored resume, and message.
 Gate 3: user sees final content and confirms.  
 Gate 4: agent submits only the confirmed action or confirmed action sequence.
 Gate 5: result is logged immediately.
@@ -45,6 +58,7 @@ If any gate fails, stop at `packet_ready` or `manual_handoff`.
 - If the page changes but success is not visible, log `submit_unknown` and ask the user to verify the platform status.
 - If the user wants to continue in the browser after a block, switch to `user_takeover_required`; do not keep clicking.
 - For rejection or poor response feedback, move to `re_tailor`, update the JD gap notes, and only then reuse the company-role packet.
+- For repeated no-response after two follow-ups, recommend `discarded` or lower priority instead of drafting more messages.
 
 ## Action Sequence
 

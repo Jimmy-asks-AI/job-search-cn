@@ -8,9 +8,23 @@
 - **简历美化**：把 Markdown 简历渲染为 ATS 友好的 HTML，也提供视觉版样式入口。
 - **按需求寻找岗位**：根据目标岗位、城市、薪资、行业、平台、黑名单生成搜索计划，并支持岗位列表去重。
 - **JD 分析与匹配**：抽取硬性要求、加分项、职责、关键词、风险项，并输出简历/JD 匹配分。
+- **岗位管线**：维护轻量岗位收件箱，区分待评估、已处理、已阻断岗位。
 - **定制简历**：针对每个公司和岗位生成定制简历，并要求保留改写审计，避免虚构经历。
 - **投递包生成**：生成每个岗位的简历、JD 分析、求职信/沟通话术、确认清单和投递日志行。
+- **投递后复盘**：支持状态、真实性、跟进日期和面试准备信息的日志化。
 - **投递辅助**：支持手动投递、半自动打开页面、受控自动投递的流程设计；真实发送、上传、提交前必须逐项确认。
+
+## 最近优化内容
+
+参考 `career-ops` 后，本 skill 增加了更完整但仍保持轻量的求职管线：
+
+- `templates/job_pipeline.md`：岗位收件箱，用于区分待评估、已处理和已阻断岗位。
+- `references/jd_analysis_rubric.md`：新增岗位真实性判断，输出 `high_confidence`、`caution`、`suspicious` 或 `unverified`。
+- `templates/application_log.md`：新增“真实性”列，并扩展投递状态。
+- `scripts/validate_application_log.py`：本地校验投递日志状态、评分和重复岗位。
+- `scripts/export_application_packet.py`：导出的投递包清单和日志片段已包含真实性与表单拟答检查项。
+
+没有引入 `career-ops` 的 Node/Playwright/Go dashboard/插件系统；当前仓库仍保持 Python 标准库脚本和确认式投递边界。
 
 ## 安全边界
 
@@ -70,12 +84,14 @@ job-search-cn/
     parse_resume.py
     render_resume.py
     score_match.py
+    validate_application_log.py
     validate_platform_registry.py
   templates/
     application_log.md
     application_packet_checklist.md
     candidate_profile.yml
     cover_letter_cn.md
+    job_pipeline.md
     job_search_brief.md
     platform_adapter.md
     resume_master.md
@@ -93,6 +109,7 @@ python scripts/parse_resume.py resume.md --out resume_sections.json
 python scripts/render_resume.py resume.md --out resume.html --style ats
 python scripts/dedupe_jobs.py jobs.csv --out jobs_dedup.jsonl
 python scripts/export_application_packet.py --out-dir packets --company 示例科技 --role 产品经理 --resume resume.md --jd-analysis job_analysis.json
+python scripts/validate_application_log.py templates/application_log.md
 python scripts/validate_platform_registry.py references/platform_registry.yml
 ```
 
@@ -149,8 +166,9 @@ cp -R . "$HOME/.codex/skills/job-search-cn"
 建议上传前执行：
 
 ```powershell
-python C:\Users\81901\.codex\skills\.system\skill-creator\scripts\quick_validate.py .
+$env:PYTHONUTF8='1'; python C:\Users\81901\.codex\skills\.system\skill-creator\scripts\quick_validate.py .
 python scripts/validate_platform_registry.py references/platform_registry.yml
+python scripts/validate_application_log.py --self-test
 python -m compileall -q scripts
 ```
 

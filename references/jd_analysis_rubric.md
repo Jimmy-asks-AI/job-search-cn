@@ -14,6 +14,7 @@ Produce:
 - Responsibilities.
 - Keywords: Chinese terms, English terms, tools, methods, business domains.
 - Risk items: unclear salary, outsourcing, 996 hints, training fees, suspicious contact, unrealistic requirements.
+- Posting legitimacy signals: publish/update date, recruiter activity, JD specificity, salary range spread, repeated reposts, and company risk news when available.
 
 ## Score
 
@@ -31,6 +32,24 @@ Classify:
 - `70-84`: Good fit; tailor with gap notes.
 - `55-69`: Weak fit; apply only if strategic.
 - `<55`: Skip unless user requests.
+
+## Posting Legitimacy
+
+Classify each posting:
+
+- `high_confidence`: current posting, concrete JD, credible salary range, no obvious risk signal.
+- `caution`: mixed signals, stale date, broad salary range, vague team/product detail, or company risk needs user review.
+- `suspicious`: expired/inaccessible page, unrealistic requirements, training fee, suspicious contact, or repeated repost pattern.
+
+Do not overclaim. If sources are weak, write `unverified` and keep the job out of auto-apply.
+
+## Interview Prep Extract
+
+For roles scored `70+`, also extract:
+
+- Top 5 likely interview topics from the JD.
+- 3-6 STAR+R story prompts grounded in the resume facts.
+- Application-form questions likely to appear, such as motivation, salary, availability, relocation, work authorization, and open-ended fit questions.
 
 ## Tailoring Rules
 
